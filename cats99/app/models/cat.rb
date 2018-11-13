@@ -11,4 +11,7 @@ class Cat < ApplicationRecord
   def age
     Time.now.year - birth_date.year
   end
+
+
+    
 end
