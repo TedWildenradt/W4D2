@@ -12,6 +12,8 @@ class Cat < ApplicationRecord
     Time.now.year - birth_date.year
   end
 
-
-    
+  has_many :rental_requests,
+    foreign_key: :cat_id,
+    class_name: :CatRentalRequest,
+    destroy: :dependent
 end
