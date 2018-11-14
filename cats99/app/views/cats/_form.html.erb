@@ -29,18 +29,19 @@
 
   <label>
     <select name="cat[color]">
-      <option disabled selected="" >-- Select a color --</option>
+      <option disabled <%= cat.color.nil? ? "selected" : "" %>>-- Select a color --</option>
       <% Cat::COLORS.each do |color| %>
-        <option value="<%=color%>"><%=color.capitalize%></option>
+        <option value="<%=color%>" <%= cat.color == color ? "selected" : "" %>><%=color.capitalize%></option>
       <% end %>
     </select>
   </label>
   <br>
 
   <label>Start date:
-    <input type="date" id="start" name="cat[birth_date]"
-           value="2018-11-14"
-           min="1990-01-01" max="2018-11-14">
+    <input type="date"
+           id="start"
+           name="cat[birth_date]"
+           value="<%= cat.birth_date%>">
   </label>
 
   <br>
