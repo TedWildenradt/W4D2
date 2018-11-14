@@ -1,23 +1,35 @@
 <% if action == :new %>
-<form action="<%= cats_url %>" method="post">
+  <% action_url = cat_url %>
+  <% submit_value = "Add New Cat" %>
+<% else %>
+  <% action_url = cat_url(@cat) %>
+  <% submit_value = "Update Cat" %>
+<% end %>
+
+
+<form action="<%= action_url %>" method="post">
+  <% if action == :edit %>
+    <input type="hidden" name="_method" value="patch">
+  <% end %>
+
   <label>
     Name:
-    <input type="text" name="cat[name]" value="">
+    <input type="text" name="cat[name]" value="<% @cat.name if action == :edit %>">
   </label>
 
   <br>
 
   <label>
     Sex:
-    <input type="radio" name="cat[sex]" value="M">Male
-    <input type="radio" name="cat[sex]" value="F">Female
+      <input type="radio" name="cat[sex]" value="M" <%= cat.sex == "M" ? "checked" : "" %>>Male
+      <input type="radio" name="cat[sex]" value="F" <%= cat.sex == "F" ? "checked" : "" %>>Female
   </label>
 
   <br>
 
   <label>
     <select name="cat[color]">
-      <option disabled selected>-- Select a color --</option>
+      <option disabled selected="" >-- Select a color --</option>
       <% Cat::COLORS.each do |color| %>
         <option value="<%=color%>"><%=color.capitalize%></option>
       <% end %>
@@ -37,60 +49,5 @@
   </label>
 
   <br>
-  <input type="submit" value="Add Cat to Shelter">
-</form>  
-
-<%else %>
-
-<form action="<%= cat_url(@cat) %>" method="post">
-  <input type="hidden" name="_method" value="patch">
-    <label>
-      Name:
-      <input type="text" name="cat[name]" value="<%=@cat.name %>">
-    </label>
-
-    <br>
-
-    <label>
-      Sex:
-      <% if @cat.sex == "M" %>
-        <input checked type="radio" name="cat[sex]" value="M">Male
-        <input type="radio" name="cat[sex]" value="F">Female
-      <% else %>
-      <input type="radio" name="cat[sex]" value="M">Male
-      <input checked type="radio" name="cat[sex]" value="F">Female
-      <% end %>
-    </label>
-
-    <br>
-
-    <label>
-      <select name="cat[color]">
-        <option disabled>-- Select a color --</option>
-        <% Cat::COLORS.each do |color| %>
-        <% if @cat.color == color %>
-          <option selected value="<%=color%>"><%=color.capitalize%></option>
-        <% else %>
-          <option value="<%=color%>"><%=color.capitalize%></option>
-        <% end %>
-      <% end %>
-      </select>
-    </label>
-    <br>
-
-  <label>Start date:
-    <input type="date" id="start" name="cat[birth_date]"
-           value="<%@cat.birth_date %>"
-           min="1990-01-01" max="2018-11-14">
-  </label>
-
-  <br>
-  <label>
-    <textarea name="cat[description]" placeholder="Enter your cat's description:"></textarea>
-  </label>
-
-  <br>
-  <input type="submit" value="Add Cat to Shelter">
-
+  <input type="submit" value="<%= submit_value %>">
 </form>
-<% end %>
